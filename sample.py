@@ -10,9 +10,10 @@ class ContainerShip:
     loadType='0'
     companyName='0'
     companyCountry='0'
-    def getting_info(self,text) :
-        infoList=re.split("-|/|@|\.", text)
-        self.originCountry=infoList[0]
+    def getting_info (self,text) :
+        info_list = []
+        info_list = re.split("-|/|@|\.", text)
+        self.originCountry = infoList[0]
 
 
 
@@ -40,6 +41,9 @@ def load_data() :
 
 dataContainers = load_data()
 print(dataContainers)
-
+for container in dataContainers.values():
+    info = container
+    container = ContainerShip()
+    container.getting_info(info)
 
 
