@@ -117,17 +117,14 @@ for containers_list in ship_name_to_container_list.values():
 german_containers = defaultdict(int)
 german_prices = defaultdict(int)
 german_weights = defaultdict(int)
+german_types = set()
 for ship, containers_list in ship_name_to_container_list.items():
     for container in containers_list:
-        if container.loadType not in german_containers.keys() and container.loadType not in german_weights.keys() \
-                and container.loadType not in german_prices.keys():
-            german_containers[container.loadType] = german_containers[container.loadType]
-            german_prices[container.loadType] = german_prices[container.loadType]
-            german_weights[container.loadType] = german_weights[container.loadType]
-        if ship.originCountry == "DE" and container.companyCountry == "DE":
+        if container.originCountry == "DE" and container.companyCountry.upper() == "DE":
             german_prices[container.loadType] += container.amount
             german_weights[container.loadType] += container.containerWeight
-for german_type in german_containers.keys():
+            german_types.add(container.loadType)
+for german_type in german_types:
     german_containers[german_type] = float(german_prices[german_type] / german_weights[german_type])
 
 
@@ -135,7 +132,7 @@ print("TASK 1: {counter_1}".format(counter_1=counter_1))
 print("TASK 2: {value}".format(value=max(ships_classes.items(), key=operator.itemgetter(1))[0]))
 print("TASK 3: {value_3}".format(value_3=averageWeight))
 print("TASK 4: {value_4}".format(value_4=max(polish_companies.items(), key=operator.itemgetter(1))[0]))
-#print("TASK 5: {value_5}".format(value_5=max(german_containers.items(), key=operator.itemgetter(1))[0]))
+print("TASK 5: {value_5}".format(value_5=max(german_containers.items(), key=operator.itemgetter(1))[0]))
 
 
 
