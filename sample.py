@@ -20,8 +20,8 @@ class ContainerShip:
     def getting_info (self,text) :
         info_list = []
         info_list = re.split("-|/|@|\.", text)
-        self.originCountry = info_list[0]
-        self.destinationCountry = info_list[1]
+        self.originCountry = info_list[0].upper()
+        self.destinationCountry = info_list[1].upper()
         self.containerNumber = int(info_list[2])
         self.containerWeight = int(info_list[3])
         self.loadType = info_list[4]
@@ -35,8 +35,8 @@ class Ship:
     name = "0"
     shipClass = "0"
     def getting_info(self, text):
-        self.originCountry = text[0]+text[1]
-        self.destinationCountry = text[3]+text[4]
+        self.originCountry = (text[0]+text[1]).upper()
+        self.destinationCountry = (text[3]+text[4]).upper()
         textForTheRest = text[5:len(text)]
         textForTheRest = textForTheRest.split("(")
         self.name = textForTheRest[0]
@@ -83,7 +83,7 @@ counter_1 = 0
 for ship, containers_str in ship_name_to_container_list.items():
     for container in containers_str:
         #import ipdb;ipdb.set_trace()
-        if ship.destinationCountry.upper() == "JP" and container.destinationCountry.upper() == "JP":
+        if ship.destinationCountry == "JP" and container.destinationCountry == "JP":
             counter_1 += 1
 
 # TASK 2
@@ -119,12 +119,17 @@ german_prices = defaultdict(int)
 german_weights = defaultdict(int)
 for ship, containers_list in ship_name_to_container_list.items():
     for container in containers_list:
-        if ship.originCountry == "DE" and container.companyCountry == "de":
+        if container.loadType not in german_containers.keys() and container.loadType not in german_weights.keys() \
+                and container.loadType not in german_prices.keys():
+            german_containers[container.loadType] = german_containers[container.loadType]
+            german_prices[container.loadType] = german_prices[container.loadType]
+            german_weights[container.loadType] = german_weights[container.loadType]
+        if ship.originCountry == "DE" and container.companyCountry == "DE":
             german_prices[container.loadType] += container.amount
             german_weights[container.loadType] += container.containerWeight
-
 for german_type in german_containers.keys():
     german_containers[german_type] = float(german_prices[german_type] / german_weights[german_type])
+
 
 print("TASK 1: {counter_1}".format(counter_1=counter_1))
 print("TASK 2: {value}".format(value=max(ships_classes.items(), key=operator.itemgetter(1))[0]))
