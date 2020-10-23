@@ -10,13 +10,13 @@ class ContainerShip:
     loadType='0'
     companyName='0'
     companyCountry='0'
-    def getting_info(self,text):
+    def getting_info(self,text) :
         infoList=re.split("-|/|@|\.", text)
         self.originCountry=infoList[0]
 
 
 
-def load_data():
+def load_data() :
     test = pd.read_csv("dane.csv", delimiter=';', header=None)
     all_containers = []
     for col in test.columns:
@@ -25,21 +25,22 @@ def load_data():
     new_header = test.iloc[0]
     test = test[1:]
     test.columns = new_header
-    shipsAndContainers={}
+    ships_and_containers = {}
     for col in test.columns:
-        containers=[]
+        containers = []
         for cell in col:
             containers.extend(cell)
-        shipsAndContainers[col]=containers
+        ships_and_containers[col] = containers
     print(f"read {len(all_containers)} containers")
     jap_containers = [con for con in all_containers if con.split('-')[1] == 'JP']
     print(f"{len(jap_containers)} containers will end up in japan")
-    return shipsAndContainers
+    return ships_and_containers
     # import ipdb; ipdb.set_trace()
     # names = [con.split('/')[0].split('-')[2] for con in all_containers]
 
 
-dataContainers=load_data()
+dataContainers = load_data()
+print(dataContainers)
 
 
 
