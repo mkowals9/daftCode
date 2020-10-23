@@ -33,17 +33,14 @@ class Ship:
     def getting_info(self,text):
         #print(text)
         info_list = []
-        info_list = re.split("-| ",text)
-        self.originCountry = info_list[0]
-        self.destinationCountry = info_list[1]
-        self.name = info_list[2]
-        text=info_list[3]
-        for char in "()":
-            text = text.replace(char, "")
-        info_list[3].replace("(", "")
-        info_list[3].replace(")", "")
-        # info_list[3] = text
-        print(info_list)
+        self.originCountry = text[0]+text[1]
+        self.destinationCountry = text[3]+text[4]
+        textForTheRest = text[5:len(text)]
+        textForTheRest = textForTheRest.split("(")
+        self.name = textForTheRest[0]
+        self.shipClass = textForTheRest[1].replace(")", "")
+        print(self.shipClass, self.name, self.originCountry, self.destinationCountry)
+
 
 
 def load_data() :
@@ -51,10 +48,10 @@ def load_data() :
     all_containers = []
     for col in test.columns:
         all_containers.extend([cell for cell in test.get(col) if pd.notna(cell)])
-    print(test.head(5))
     new_header = test.iloc[0]
     test = test[1:]
     test.columns = new_header
+    print(test.columns)
     ships_and_containers = {}
     for col in test.columns:
         containers = []
