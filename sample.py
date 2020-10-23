@@ -30,16 +30,14 @@ class Ship:
     destinationCountry = "0"
     name = "0"
     shipClass = "0"
-    def getting_info(self,text):
-        #print(text)
-        info_list = []
+    def getting_info(self, text):
         self.originCountry = text[0]+text[1]
         self.destinationCountry = text[3]+text[4]
         textForTheRest = text[5:len(text)]
         textForTheRest = textForTheRest.split("(")
         self.name = textForTheRest[0]
         self.shipClass = textForTheRest[1].replace(")", "")
-        print(self.shipClass, self.name, self.originCountry, self.destinationCountry)
+        #print(self.shipClass, self.name, self.originCountry, self.destinationCountry)
 
 
 
@@ -51,7 +49,7 @@ def load_data() :
     new_header = test.iloc[0]
     test = test[1:]
     test.columns = new_header
-    print(test.columns)
+    #print(test.columns)
     ships_and_containers = {}
     for col in test.columns:
         containers = []
@@ -83,6 +81,16 @@ for containers_str in ship_name_to_container_list.values():
             counter_1 += 1
 
 print("TASK 1: {counter_1}".format(counter_1=counter_1))
+
+ships_classes = {}
+for ship in ship_name_to_container_list.keys():
+    if ship.shipClass not in ships_classes.keys():
+        ships_classes[ship.shipClass] = 0
+
+for ship, containers_str in ship_name_to_container_list.items():
+            ships_classes[ship.shipClass] += len(containers_str)
+
+print(ships_classes.items())
 
 
 
