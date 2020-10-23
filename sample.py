@@ -25,7 +25,25 @@ class ContainerShip:
         self.companyName = info_list[5]
         self.companyCountry = info_list[6]
 
-
+class Ship:
+    originCountry = "0"
+    destinationCountry = "0"
+    name = "0"
+    shipClass = "0"
+    def getting_info(self,text):
+        #print(text)
+        info_list = []
+        info_list = re.split("-| ",text)
+        self.originCountry = info_list[0]
+        self.destinationCountry = info_list[1]
+        self.name = info_list[2]
+        text=info_list[3]
+        for char in "()":
+            text = text.replace(char, "")
+        info_list[3].replace("(", "")
+        info_list[3].replace(")", "")
+        # info_list[3] = text
+        print(info_list)
 
 
 def load_data() :
@@ -54,12 +72,23 @@ dataContainers = load_data()
 #print(dataContainers)
 ship_name_to_container_list = defaultdict(list)
 for ship, containers_str in dataContainers.items():
+    ship_2 = Ship()
+    ship_2.getting_info(ship)
     for container_str in containers_str:
         container = ContainerShip()
         container.getting_info(container_str)
-        ship_name_to_container_list[ship].append(container)
+        ship_name_to_container_list[ship_2].append(container)
 
-print(dict(ship_name_to_container_list))
+counter_1 = 0
+for containers_str in ship_name_to_container_list.values():
+    for container in containers_str:
+        if container.destinationCountry == "JP":
+            counter_1 += 1
+
+print("TASK 1: {counter_1}".format(counter_1=counter_1))
+
+
+
 
 
 
