@@ -1,14 +1,15 @@
 import csv
 import pandas as pd
 import re
+import math
 import operator
 from collections import defaultdict
 
 class ContainerShip:
     originCountry = '0'
     destinationCountry = '0'
-    containerNumber = '0'
-    containerWeight = '0'
+    containerNumber = 0
+    containerWeight = 0
     loadType = '0'
     companyName = '0'
     companyCountry = '0'
@@ -20,8 +21,8 @@ class ContainerShip:
         info_list = re.split("-|/|@|\.", text)
         self.originCountry = info_list[0]
         self.destinationCountry = info_list[1]
-        self.containerNumber = info_list[2]
-        self.containerWeight = info_list[3]
+        self.containerNumber = int(info_list[2])
+        self.containerWeight = int(info_list[3])
         self.loadType = info_list[4]
         self.companyName = info_list[5]
         self.companyCountry = info_list[6]
@@ -92,6 +93,15 @@ for ship, containers_str in ship_name_to_container_list.items():
             ships_classes[ship.shipClass] += len(containers_str)
 
 # TASK 3
+fruitContainersWeight = 0
+fruitContainersAmount = 0
+for containers_list in ship_name_to_container_list.values():
+    for container in containers_list:
+        if container.loadType == "A3":
+            fruitContainersWeight += container.containerWeight
+            fruitContainersAmount += 1
+averageWeight = fruitContainersWeight / fruitContainersAmount
+averageWeight = math.ceil(averageWeight)
 
 # TASK 4
 polish_companies = defaultdict(int)
@@ -103,9 +113,9 @@ for containers_list in ship_name_to_container_list.values():
 
 print("TASK 1: {counter_1}".format(counter_1=counter_1))
 print("TASK 2: {value}".format(value=max(ships_classes.items(), key=operator.itemgetter(1))[0]))
-print("TASK 3: ")
+print("TASK 3: {value_3}".format(value_3=averageWeight))
 print("TASK 4: {value_4}".format(value_4=max(polish_companies.items(), key=operator.itemgetter(1))[0]))
-print("TASK 5:")
+print("TASK 5: ")
 
 
 
