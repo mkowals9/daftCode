@@ -13,6 +13,7 @@ class ContainerShip:
     loadType = '0'
     companyName = '0'
     companyCountry = '0'
+    amount = 0
     def __rep__(self):
         return "Hello"
 
@@ -26,6 +27,7 @@ class ContainerShip:
         self.loadType = info_list[4]
         self.companyName = info_list[5]
         self.companyCountry = info_list[6]
+        self.amount = int(info_list[7])
 
 class Ship:
     originCountry = "0"
@@ -43,7 +45,7 @@ class Ship:
 
 
 
-def load_data() :
+def load_data():
     test = pd.read_csv("dane.csv", delimiter=';', header=None)
     all_containers = []
     for col in test.columns:
@@ -57,14 +59,14 @@ def load_data() :
         containers = []
         containers.extend([cell for cell in test.get(col) if pd.notna(cell)])
         ships_and_containers[col] = containers
-    print(f"read {len(all_containers)} containers")
-    jap_containers = [con for con in all_containers if con.split('-')[1] == 'JP']
-    print(f"{len(jap_containers)} containers will end up in japan")
+    #print(f"read {len(all_containers)} containers")
+    #jap_containers = [con for con in all_containers if con.split('-')[1] == 'JP']
+    #print(f"{len(jap_containers)} containers will end up in japan")
     return ships_and_containers
-    # import ipdb; ipdb.set_trace()
+    #import ipdb; ipdb.set_trace()
     # names = [con.split('/')[0].split('-')[2] for con in all_containers]
 
-
+#import ipdb; ipdb.set_trace()
 dataContainers = load_data()
 #print(dataContainers)
 ship_name_to_container_list = defaultdict(list)
@@ -78,9 +80,10 @@ for ship, containers_str in dataContainers.items():
 
 # TASK 1
 counter_1 = 0
-for containers_str in ship_name_to_container_list.values():
+for ship, containers_str in ship_name_to_container_list.items():
     for container in containers_str:
-        if container.destinationCountry == "JP":
+        #import ipdb;ipdb.set_trace()
+        if ship.destinationCountry.upper() == "JP" and container.destinationCountry.upper() == "JP":
             counter_1 += 1
 
 # TASK 2
@@ -109,13 +112,25 @@ for containers_list in ship_name_to_container_list.values():
     for container in containers_list:
         if container.companyCountry == "pl":
             polish_companies[container.companyName] += 1
-#print(polish_companies)
+
+#TASK 5
+german_containers = defaultdict(int)
+german_prices = defaultdict(int)
+german_weights = defaultdict(int)
+for ship, containers_list in ship_name_to_container_list.items():
+    for container in containers_list:
+        if ship.originCountry == "DE" and container.companyCountry == "de":
+            german_prices[container.loadType] += container.amount
+            german_weights[container.loadType] += container.containerWeight
+
+for german_type in german_containers.keys():
+    german_containers[german_type] = float(german_prices[german_type] / german_weights[german_type])
 
 print("TASK 1: {counter_1}".format(counter_1=counter_1))
 print("TASK 2: {value}".format(value=max(ships_classes.items(), key=operator.itemgetter(1))[0]))
 print("TASK 3: {value_3}".format(value_3=averageWeight))
 print("TASK 4: {value_4}".format(value_4=max(polish_companies.items(), key=operator.itemgetter(1))[0]))
-print("TASK 5: ")
+#print("TASK 5: {value_5}".format(value_5=max(german_containers.items(), key=operator.itemgetter(1))[0]))
 
 
 
