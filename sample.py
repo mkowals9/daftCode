@@ -1,6 +1,7 @@
 import csv
 import pandas as pd
 import re
+import operator
 from collections import defaultdict
 
 class ContainerShip:
@@ -74,14 +75,14 @@ for ship, containers_str in dataContainers.items():
         container.getting_info(container_str)
         ship_name_to_container_list[ship_2].append(container)
 
+# TASK 1
 counter_1 = 0
 for containers_str in ship_name_to_container_list.values():
     for container in containers_str:
         if container.destinationCountry == "JP":
             counter_1 += 1
 
-print("TASK 1: {counter_1}".format(counter_1=counter_1))
-
+# TASK 2
 ships_classes = {}
 for ship in ship_name_to_container_list.keys():
     if ship.shipClass not in ships_classes.keys():
@@ -90,7 +91,21 @@ for ship in ship_name_to_container_list.keys():
 for ship, containers_str in ship_name_to_container_list.items():
             ships_classes[ship.shipClass] += len(containers_str)
 
-print(ships_classes.items())
+# TASK 3
+
+# TASK 4
+polish_companies = defaultdict(int)
+for containers_list in ship_name_to_container_list.values():
+    for container in containers_list:
+        if container.companyCountry == "pl":
+            polish_companies[container.companyName] += 1
+#print(polish_companies)
+
+print("TASK 1: {counter_1}".format(counter_1=counter_1))
+print("TASK 2: {value}".format(value=max(ships_classes.items(), key=operator.itemgetter(1))[0]))
+print("TASK 3: ")
+print("TASK 4: {value_4}".format(value_4=max(polish_companies.items(), key=operator.itemgetter(1))[0]))
+print("TASK 5:")
 
 
 
