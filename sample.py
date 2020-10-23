@@ -28,8 +28,7 @@ def load_data() :
     ships_and_containers = {}
     for col in test.columns:
         containers = []
-        for cell in col:
-            containers.extend(cell)
+        containers.extend([cell for cell in test.get(col) if pd.notna(cell)])
         ships_and_containers[col] = containers
     print(f"read {len(all_containers)} containers")
     jap_containers = [con for con in all_containers if con.split('-')[1] == 'JP']
