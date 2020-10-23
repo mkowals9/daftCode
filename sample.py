@@ -3,17 +3,24 @@ import pandas as pd
 import re
 
 class ContainerShip:
-    originCountry='0'
-    destinationCountry='0'
-    containerNumber='0'
-    containerWeight='0'
-    loadType='0'
-    companyName='0'
-    companyCountry='0'
+    originCountry = '0'
+    destinationCountry = '0'
+    containerNumber = '0'
+    containerWeight = '0'
+    loadType = '0'
+    companyName = '0'
+    companyCountry = '0'
     def getting_info (self,text) :
         info_list = []
         info_list = re.split("-|/|@|\.", text)
-        self.originCountry = infoList[0]
+        self.originCountry=info_list[0]
+        self.destinationCountry=info_list[1]
+        self.containerNumber=info_list[2]
+        self.containerWeight=info_list[3]
+        self.loadType=info_list[4]
+        self.companyName=info_list[5]
+        self.companyCountry=info_list[6]
+
 
 
 
@@ -40,10 +47,12 @@ def load_data() :
 
 
 dataContainers = load_data()
-print(dataContainers)
-for container in dataContainers.values():
-    info = container
-    container = ContainerShip()
-    container.getting_info(info)
+#print(dataContainers)
+for containerslist in dataContainers.values():
+    for container in containerslist:
+        info = container
+        #print(info)
+        container = ContainerShip()
+        container.getting_info(info)
 
 
